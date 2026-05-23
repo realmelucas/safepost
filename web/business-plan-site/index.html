@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>守岗 SafePost 内部方案</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="守岗 SafePost 首页">
+        <span class="brand-mark">S</span>
+        <span>守岗 SafePost</span>
+      </a>
+      <nav aria-label="主要导航">
+        <a href="#problem">痛点</a>
+        <a href="#solution">方案</a>
+        <a href="#mvp">MVP</a>
+        <a href="#mechanism">机制</a>
+        <a href="#pilot">试点</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <canvas id="heroScene" aria-hidden="true"></canvas>
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="eyebrow">车厢盲区安全管理系统 / 物流孤岗作业安全系统</p>
+          <h1>守岗 SafePost</h1>
+          <p class="hero-subtitle">让每一位进入车厢作业的人，都能被看见、被确认、被守护。</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#pilot">启动内部试点</a>
+            <a class="secondary-action" href="#mechanism">查看失联发现机制</a>
+          </div>
+          <div class="signal-strip" aria-label="关键指标">
+            <div>
+              <strong>&lt;10s</strong>
+              <span>SOS 到企业微信</span>
+            </div>
+            <div>
+              <strong>2min</strong>
+              <span>主管确认目标</span>
+            </div>
+            <div>
+              <strong>98%+</strong>
+              <span>人员在线确认率</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="brief" id="problem">
+        <div class="section-heading">
+          <p>核心问题</p>
+          <h2>一个进入车厢作业的人，不应在失去行动能力后长时间无人发现。</h2>
+        </div>
+        <div class="problem-grid">
+          <article>
+            <span>01</span>
+            <h3>车厢是监控盲区</h3>
+            <p>视频看不到、主管不一定在场，人员状态一旦异常，很难被实时确认。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>单人作业风险极高</h3>
+            <p>外包和成本压力下，原本需要双人协同的岗位可能只安排 1 人。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>高温与基础疾病叠加</h3>
+            <p>装卸工年龄偏大，车厢内高温、噪声和高强度劳动会放大身体风险。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="dark-band" id="solution">
+        <div class="section-heading light">
+          <p>解决方案</p>
+          <h2>不是宣传智能硬件，而是建立一套失联发现机制。</h2>
+        </div>
+        <div class="solution-layout">
+          <div class="device-panel">
+            <div class="badge-visual">
+              <div class="clip"></div>
+              <div class="leds">
+                <i class="green"></i>
+                <i class="yellow"></i>
+                <i class="red"></i>
+              </div>
+              <button>SOS</button>
+              <small>B0001</small>
+            </div>
+            <p>工牌只是人员状态采集和现场提醒终端，真正要验证的是车厢盲区里的失联发现链路。</p>
+          </div>
+          <div class="flow-list">
+            <div>
+              <b>上岗前可筛查</b>
+              <span>身份确认、血压检测、酒精检测，云端判定是否允许作业。</span>
+            </div>
+            <div>
+              <b>作业中可监护</b>
+              <span>系统持续确认人员在线、运动、响应、电量和作业时长。</span>
+            </div>
+            <div>
+              <b>失联时可发现</b>
+              <span>SOS、失联、静止、无响应、作业超时触发后台和企业微信报警。</span>
+            </div>
+            <div>
+              <b>事故后可追溯</b>
+              <span>检测、作业、报警、通知、确认和处置形成完整日志。</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mvp" id="mvp">
+        <div class="section-heading">
+          <p>MVP 阶段</p>
+          <h2>第一阶段不做 AI，只验证最关键的生命线。</h2>
+        </div>
+        <div class="timeline">
+          <div><span>进入车厢</span></div>
+          <div><span>开始作业</span></div>
+          <div><span>模拟失能</span></div>
+          <div><span>无响应</span></div>
+          <div><span>自动报警</span></div>
+          <div><span>主管确认</span></div>
+        </div>
+        <div class="mvp-note">
+          <strong>暂不实现：</strong>
+          <span>AI 分析、GPS、摄像头、心率监测、血氧监测。</span>
+        </div>
+      </section>
+
+      <section class="business" id="mechanism">
+        <div class="section-heading">
+          <p>核心机制</p>
+          <h2>把“有没有人还在车里”从人工经验变成系统确认。</h2>
+        </div>
+        <div class="business-grid">
+          <article>
+            <h3>进入可记录</h3>
+            <p>谁进入车厢、何时开始作业、属于哪条装卸线，形成作业会话。</p>
+          </article>
+          <article>
+            <h3>状态可确认</h3>
+            <p>持续确认在线、运动、响应和作业时长，减少现场无人监管的空窗。</p>
+          </article>
+          <article>
+            <h3>异常可追溯</h3>
+            <p>报警、企业微信通知、主管确认和处置动作沉淀成完整时间线。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="deck" id="deck">
+        <div class="section-heading light">
+          <p>内部管理价值</p>
+          <h2>从事后追责，前移到事前预防和实时预警。</h2>
+        </div>
+        <div class="deck-grid">
+          <div>
+            <strong>先解决内部真实问题</strong>
+            <span>单人装车、高温车厢、三方劳务、现场管理密度不足。</span>
+          </div>
+          <div>
+            <strong>对标 Lone Worker Safety</strong>
+            <span>孤岗作业安全监护是成熟需求，SafePost 聚焦物流车厢盲区。</span>
+          </div>
+          <div>
+            <strong>项目壁垒</strong>
+            <span>真实事故经验、现场流程理解、报警规则和主管处置闭环。</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="pilot" id="pilot">
+        <div class="pilot-copy">
+          <p>试点计划</p>
+          <h2>先作为内部安全项目验证，把车厢盲区变成可监护区域。</h2>
+          <span>建议 1 个转运中心、2 条装卸线、50-100 名工人、5-10 个基站，4-6 周验证。</span>
+        </div>
+        <div class="pilot-card">
+          <h3>试点验收指标</h3>
+          <ul>
+            <li>SOS 到主管通知小于 10 秒</li>
+            <li>无响应异常 2 分钟内确认</li>
+            <li>工牌在线率大于 98%</li>
+            <li>关键报警日志完整率大于 99%</li>
+          </ul>
+          <a class="primary-action" href="mailto:pilot@safepost.local">启动 SafePost 内部试点</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./scene.js"></script>
+  </body>
+</html>

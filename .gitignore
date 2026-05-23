@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+.vite/
+.env
+.env.local
+.DS_Store
+*.log
+.pio/
+*.bin
+*.elf
+*.map
