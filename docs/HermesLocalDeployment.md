@@ -158,6 +158,16 @@ SafePost 守岗 MVP
 验收：能按下 SOS 上报 MQTT；静止 120 秒触发报警。
 ```
 
+更完整的飞书多角色 Agent 用法见：[`FeishuAgentWorkflow.md`](./FeishuAgentWorkflow.md)。
+
+常用脚本：
+
+```bash
+scripts/hermes/create_task.sh firmware "任务标题" "任务详情"
+scripts/hermes/status_report.sh
+scripts/hermes/status_report.sh --send
+```
+
 ## 7. 本地启动顺序
 
 1. 切到项目目录。
