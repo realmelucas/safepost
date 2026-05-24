@@ -98,6 +98,27 @@ scripts/hermes/create_task.sh firmware \
 
 如果加 `--send`，会通过 Hermes 的 Feishu home channel 主动推送。
 
+当前已经配置 Hermes cron：
+
+```text
+任务 ID：f37aa7fb0afe
+名称：SafePost 两小时工作状态汇报
+周期：每 2 小时
+模式：no-agent，直接运行脚本并发送输出
+脚本：~/.hermes/scripts/safepost_status_report.sh
+投递：飞书 home channel
+```
+
+管理命令：
+
+```bash
+hermes cron list
+hermes cron pause f37aa7fb0afe
+hermes cron resume f37aa7fb0afe
+hermes cron run f37aa7fb0afe
+hermes cron remove f37aa7fb0afe
+```
+
 ## 6. 安全建议
 
 当前飞书已经切回安全模式：
