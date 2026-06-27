@@ -1,0 +1,139 @@
+/* ============================================
+   SafePost Animation System
+   ============================================ */
+
+/* ---------- SOS Pulse (2Hz) ---------- */
+@keyframes sos-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--color-sos, #ff1f1f);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 31, 31, 0);
+    opacity: 0.7;
+  }
+}
+
+.sos-pulse {
+  animation: sos-pulse 0.5s ease-in-out infinite;
+}
+
+/* ---------- Alert Pulse (1Hz) ---------- */
+@keyframes alert-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--color-danger, #ff4d4f);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 77, 79, 0);
+    opacity: 0.6;
+  }
+}
+
+.alert-pulse {
+  animation: alert-pulse 1s ease-in-out infinite;
+}
+
+/* ---------- Data Fresh (green dot pulse for live data) ---------- */
+@keyframes data-fresh {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--color-safe, #52c41a);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(82, 196, 26, 0.3);
+  }
+}
+
+.data-fresh {
+  animation: data-fresh 2s ease-in-out infinite;
+}
+
+/* ---------- Value Pop (number change animation) ---------- */
+@keyframes value-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.value-pop {
+  animation: value-pop 0.3s ease-out;
+}
+
+/* ---------- Fade In ---------- */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* ---------- Slide In Right ---------- */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+/* ---------- Slide In Up ---------- */
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slide-in-up 0.3s ease-out;
+}
+
+/* ---------- Spin Slow ---------- */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
