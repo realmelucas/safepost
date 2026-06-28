@@ -5,17 +5,17 @@
 
 /* ── Reset & Variables ──────────────────────── */
 .landing-page {
-  --lp-primary: #1677ff;
-  --lp-primary-dark: #0958d9;
-  --lp-accent: #7e14ff;
-  --lp-bg: #ffffff;
-  --lp-bg-alt: #f5f7fa;
-  --lp-text: #1a1a2e;
-  --lp-text-secondary: #6b7280;
-  --lp-border: #e5e7eb;
+  --lp-primary: #5eb0ff;
+  --lp-primary-dark: #3d8de0;
+  --lp-accent: #9e7aff;
+  --lp-bg: #0a0e1a;
+  --lp-bg-alt: #0f1528;
+  --lp-text: #e8eaf0;
+  --lp-text-secondary: #8890a8;
+  --lp-border: rgba(255,255,255,0.06);
   --lp-radius: 12px;
-  --lp-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  --lp-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.12);
+  --lp-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --lp-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.5);
   --lp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 
   font-family: var(--lp-font);
@@ -23,17 +23,6 @@
   background: var(--lp-bg);
   scroll-behavior: smooth;
   overflow-x: hidden;
-}
-
-/* Dark mode support */
-[data-theme="dark"] .landing-page {
-  --lp-bg: #0a0a1a;
-  --lp-bg-alt: #111128;
-  --lp-text: #e5e7eb;
-  --lp-text-secondary: #9ca3af;
-  --lp-border: #1f1f3a;
-  --lp-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --lp-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.5);
 }
 
 /* ── Container ──────────────────────────────── */
@@ -54,20 +43,17 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 40px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(10, 14, 26, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
   transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .lp-nav {
-  background: rgba(10, 10, 26, 0.85);
-}
-
 .lp-nav.scrolled {
-  border-bottom-color: var(--lp-border);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  border-bottom-color: rgba(255,255,255,0.08);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.4);
+  background: rgba(10, 14, 26, 0.92);
 }
 
 .lp-nav-brand {
@@ -106,15 +92,18 @@
 
 .lp-nav-cta {
   padding: 8px 20px;
-  background: var(--lp-primary);
-  color: #fff !important;
+  background: rgba(94, 176, 255, 0.15);
+  border: 1px solid rgba(94, 176, 255, 0.3);
+  color: var(--lp-primary) !important;
   border-radius: 8px;
   font-weight: 600 !important;
-  transition: background 0.2s, transform 0.2s;
+  transition: all 0.2s;
 }
 
 .lp-nav-cta:hover {
-  background: var(--lp-primary-dark);
+  background: rgba(94, 176, 255, 0.25);
+  border-color: rgba(94, 176, 255, 0.5);
+  color: #fff !important;
   transform: translateY(-1px);
 }
 
@@ -279,26 +268,33 @@
 }
 
 .lp-btn-primary {
-  background: linear-gradient(135deg, var(--lp-primary), var(--lp-accent));
+  background: rgba(94, 176, 255, 0.15);
+  border: 1px solid rgba(94, 176, 255, 0.35);
   color: #fff;
-  box-shadow: 0 4px 20px rgba(22, 119, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .lp-btn-primary:hover {
+  background: rgba(94, 176, 255, 0.25);
+  border-color: rgba(94, 176, 255, 0.6);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(22, 119, 255, 0.5);
+  box-shadow: 0 8px 32px rgba(94, 176, 255, 0.2);
   color: #fff;
 }
 
 .lp-btn-outline {
-  background: transparent;
-  color: var(--lp-text);
-  border: 2px solid var(--lp-border);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .lp-btn-outline:hover {
-  border-color: var(--lp-primary);
-  color: var(--lp-primary);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
 }
 
 /* Scroll hint */
@@ -357,19 +353,18 @@
 }
 
 .lp-feature-card {
-  background: var(--lp-bg);
+  background: var(--lp-bg-alt);
   border: 1px solid var(--lp-border);
   border-radius: var(--lp-radius);
   padding: 32px 24px;
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: var(--lp-shadow);
 }
 
 .lp-feature-card:hover {
   transform: translateY(-6px);
-  box-shadow: var(--lp-shadow-lg);
-  border-color: var(--lp-primary);
+  border-color: rgba(94, 176, 255, 0.3);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
 }
 
 .lp-feature-icon {
@@ -423,15 +418,15 @@
   gap: 20px;
   align-items: flex-start;
   padding: 24px;
-  background: var(--lp-bg);
+  background: var(--lp-bg-alt);
   border: 1px solid var(--lp-border);
   border-radius: var(--lp-radius);
   transition: all 0.3s ease;
 }
 
 .lp-solution-card:hover {
-  border-color: var(--lp-primary);
-  box-shadow: var(--lp-shadow);
+  border-color: rgba(94, 176, 255, 0.25);
+  background: rgba(20, 28, 55, 0.8);
 }
 
 .lp-sc-icon {
@@ -470,7 +465,7 @@
 .lp-ai-card {
   text-align: center;
   padding: 36px 20px;
-  background: linear-gradient(145deg, var(--lp-bg), var(--lp-bg-alt));
+  background: var(--lp-bg-alt);
   border: 1px solid var(--lp-border);
   border-radius: var(--lp-radius);
   transition: all 0.3s ease;
@@ -478,8 +473,8 @@
 
 .lp-ai-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--lp-shadow-lg);
-  border-color: var(--lp-primary);
+  border-color: rgba(94, 176, 255, 0.3);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
 }
 
 .lp-ai-icon {
@@ -520,17 +515,16 @@
 }
 
 .lp-feishu-card {
-  background: var(--lp-bg);
+  background: var(--lp-bg-alt);
   border: 1px solid var(--lp-border);
   border-radius: var(--lp-radius);
   overflow: hidden;
-  box-shadow: var(--lp-shadow);
   transition: transform 0.3s;
 }
 
 .lp-feishu-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--lp-shadow-lg);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.5);
 }
 
 .lp-fc-header {
@@ -607,7 +601,7 @@
 .lp-cta {
   padding: 100px 24px;
   text-align: center;
-  background: linear-gradient(135deg, rgba(22, 119, 255, 0.05), rgba(126, 20, 255, 0.05));
+  background: linear-gradient(135deg, rgba(10, 14, 26, 0.95), rgba(15, 25, 50, 0.95));
 }
 
 .lp-cta h3 {
@@ -625,8 +619,8 @@
 
 /* ── Footer ─────────────────────────────────── */
 .lp-footer {
-  background: var(--lp-bg-alt);
-  border-top: 1px solid var(--lp-border);
+  background: #060910;
+  border-top: 1px solid rgba(255,255,255,0.04);
   padding: 32px 24px;
   text-align: center;
 }
