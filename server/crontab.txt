@@ -1,0 +1,17 @@
+# SafePost 飞书定时推送 - Crontab 配置
+# =========================================
+# 将以下内容添加到 crontab:
+#   crontab -e
+#
+# 服务器路径: /workspace/safepost-web/server
+# Python:     python3 cron_push.py
+# =========================================
+
+# 安全日报 - 每天早上 08:00
+0 8 * * * cd /workspace/safepost-web/server && /usr/bin/python3 cron_push.py daily >> /var/log/safepost-cron.log 2>&1
+
+# 安全周报 - 每周一早上 09:00
+0 9 * * 1 cd /workspace/safepost-web/server && /usr/bin/python3 cron_push.py weekly >> /var/log/safepost-cron.log 2>&1
+
+# 安全月报 - 每月1日早上 10:00
+0 10 1 * * cd /workspace/safepost-web/server && /usr/bin/python3 cron_push.py monthly >> /var/log/safepost-cron.log 2>&1

@@ -3,6 +3,7 @@ import type { GatewayMessage } from '../types/device';
 import type { WorkerInfo } from '../types/worker';
 import type { AlertInfo } from '../types/alert';
 import { MockWebSocketManager } from '../mock/simulator/mockWebSocket';
+import { sendAlertToFeishu, sendResolveToFeishu } from '../services/feishuService';
 
 export interface WebSocketContextValue {
   realtimeData: GatewayMessage | null;
@@ -12,6 +13,7 @@ export interface WebSocketContextValue {
   triggerAlert: (type: string, workerName?: string) => void;
   resetAlerts: () => void;
   isRunning: boolean;
+  feishuEnabled: boolean;
 }
 
 export const WebSocketContext = createContext<WebSocketContextValue>({
@@ -22,6 +24,7 @@ export const WebSocketContext = createContext<WebSocketContextValue>({
   triggerAlert: () => {},
   resetAlerts: () => {},
   isRunning: false,
+  feishuEnabled: false,
 });
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -30,6 +33,22 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [workers, setWorkers] = useState<WorkerInfo[]>([]);
   const [alerts, setAlerts] = useState<AlertInfo[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const [feishuEnabled, setFeishuEnabled] = useState(false);
+
+  // 启动时检测飞书后端是否可用
+  useEffect(() => {
+    fetch('http://localhost:8000/health')
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'healthy') {
+          setFeishuEnabled(true);
+          console.log('[SafePost] 飞书集成服务已连接');
+        }
+      })
+      .catch(() => {
+        console.log('[SafePost] 飞书集成服务未启动，报警将仅在本地显示');
+      });
+  }, []);
 
   useEffect(() => {
     if (!managerRef.current) {
@@ -42,8 +61,14 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       setRealtimeData(msg);
     });
 
-    const unsubAlert = manager.onAlert(() => {
+    const unsubAlert = manager.onAlert((alert) => {
       setAlerts([...manager.getAlerts()]);
+      // 自动推送到飞书
+      if (feishuEnabled) {
+        sendAlertToFeishu(alert).then((ok) => {
+          console.log(`[SafePost] 飞书推送${ok ? '成功' : '失败'}: ${alert.type} - ${alert.workerName}`);
+        });
+      }
     });
 
     manager.start();
@@ -62,10 +87,22 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const processAlert = useCallback((id: string, action: string, remark: string) => {
     const manager = managerRef.current;
     if (manager) {
+      const alert = manager.getAlerts().find(a => a.id === id);
       manager.processAlert(id, action, remark);
       setAlerts([...manager.getAlerts()]);
+      // 处置通知推送到飞书
+      if (feishuEnabled && alert) {
+        sendResolveToFeishu(
+          alert.type,
+          alert.workerName,
+          action,
+          remark
+        ).then((ok) => {
+          console.log(`[SafePost] 飞书处置通知推送${ok ? '成功' : '失败'}`);
+        });
+      }
     }
-  }, []);
+  }, [feishuEnabled]);
 
   const triggerAlert = useCallback((type: string, workerName?: string) => {
     const manager = managerRef.current;
@@ -84,7 +121,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, []);
 
   return (
-    <WebSocketContext.Provider value={{ realtimeData, workers, alerts, processAlert, triggerAlert, resetAlerts, isRunning }}>
+    <WebSocketContext.Provider value={{ realtimeData, workers, alerts, processAlert, triggerAlert, resetAlerts, isRunning, feishuEnabled }}>
       {children}
     </WebSocketContext.Provider>
   );
