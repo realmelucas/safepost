@@ -701,6 +701,163 @@ async def get_stats():
     }
 
 
+# ══════════════════════════════════════════════════════
+# 硬件网关对接 API（预留）
+# ══════════════════════════════════════════════════════
+
+class GatewayDataPayload(BaseModel):
+    """网关上报数据结构"""
+    v: str = "2.0.1"                     # 网关固件版本
+    mid: str = ""                         # 消息ID
+    time: int = 0                         # Unix时间戳
+    ip: str = ""                          # 网关IP
+    mac: str = ""                         # 网关MAC
+    devices: list[dict] = []              # 设备列表
+
+
+@app.post("/api/gateway/data")
+async def receive_gateway_data(payload: GatewayDataPayload):
+    """
+    接收蓝牙网关上报的 BLE 数据
+    POST 原始 MessagePack 或 JSON 格式
+    网关 → SafeGuard 服务器
+    """
+    # 记录网关心跳
+    gateways = _read_json("gateways.json", default={})
+    gateways[payload.mac] = {
+        "ip": payload.ip,
+        "version": payload.v,
+        "lastSeen": datetime.now().isoformat(),
+        "deviceCount": len(payload.devices),
+    }
+    _write_json("gateways.json", gateways)
+
+    # 处理设备数据
+    workers_data = _read_json("workers.json", default=[])
+    mac_to_worker = {w.get("mac"): w for w in workers_data if w.get("mac")}
+
+    for device in payload.devices:
+        dev_mac = device.get("mac", "")
+        raw = device.get("rawData", {})
+
+        # 根据 serviceUuid 分类处理
+        service_uuid = raw.get("serviceUuid", "")
+
+        if service_uuid == "0x1803":
+            # 体征数据 → 存储到实时数据
+            vital_data = {
+                "mac": dev_mac,
+                "rssi": device.get("rssi", 0),
+                "temperature": raw.get("temperature"),
+                "heartRate": raw.get("heartRate"),
+                "spo2": raw.get("spo2"),
+                "timestamp": datetime.now().isoformat(),
+            }
+            # 保存体征数据
+            vitals = _read_json("vitals.json", default=[])
+            vitals.append(vital_data)
+            # 只保留最近 1000 条
+            if len(vitals) > 1000:
+                vitals = vitals[-1000:]
+            _write_json("vitals.json", vitals)
+
+            # 体征异常检测
+            config = _read_json("config.json", default={})
+            rules = config.get("alertRules", {})
+            temp_max = rules.get("temperatureMax", 38.0)
+            temp_min = rules.get("temperatureMin", 35.0)
+            hr_max = rules.get("heartRateMax", 120)
+            hr_min = rules.get("heartRateMin", 50)
+            spo2_min = rules.get("spo2Min", 94)
+
+            temp = raw.get("temperature")
+            hr = raw.get("heartRate")
+            spo2 = raw.get("spo2")
+
+            if temp and (temp > temp_max or temp < temp_min) or \
+               hr and (hr > hr_max or hr < hr_min) or \
+               spo2 and spo2 < spo2_min:
+                # 自动创建报警
+                worker_info = mac_to_worker.get(dev_mac, {})
+                alert = {
+                    "id": str(uuid.uuid4()),
+                    "type": "vital_abnormal",
+                    "workerName": worker_info.get("name", dev_mac),
+                    "workerId": worker_info.get("id", dev_mac),
+                    "location": worker_info.get("position", "未知"),
+                    "triggeredAt": datetime.now().isoformat(),
+                    "duration": 0,
+                    "summary": f"体征异常: 体温{temp}°C 心率{hr}bpm 血氧{spo2}%",
+                    "processed": False,
+                }
+                alerts = _read_json("alerts.json", default=[])
+                alerts.insert(0, alert)
+                _write_json("alerts.json", alerts)
+
+                # 推送飞书告警
+                try:
+                    card = build_vital_card(
+                        alert["workerName"], alert["workerId"], alert["location"],
+                        alert["triggeredAt"], temp or 0, hr or 0, spo2 or 0
+                    )
+                    await feishu.send_webhook(card)
+                except Exception:
+                    pass
+
+        elif service_uuid == "0x02":
+            # SOS 广播
+            worker_info = mac_to_worker.get(dev_mac, {})
+            alert = {
+                "id": str(uuid.uuid4()),
+                "type": "sos",
+                "workerName": worker_info.get("name", dev_mac),
+                "workerId": worker_info.get("id", dev_mac),
+                "location": worker_info.get("position", "未知"),
+                "triggeredAt": datetime.now().isoformat(),
+                "duration": 0,
+                "summary": "SOS紧急求救触发",
+                "processed": False,
+            }
+            alerts = _read_json("alerts.json", default=[])
+            alerts.insert(0, alert)
+            _write_json("alerts.json", alerts)
+
+            # 紧急推送
+            try:
+                card = build_sos_card(
+                    alert["workerName"], alert["workerId"], alert["location"],
+                    alert["triggeredAt"], dev_mac, device.get("rssi", 0), 0
+                )
+                await feishu.send_webhook(card)
+            except Exception:
+                pass
+
+    return {"success": True, "devices_processed": len(payload.devices)}
+
+
+@app.get("/api/gateway/status")
+async def get_gateway_status():
+    """查询所有网关在线状态"""
+    gateways = _read_json("gateways.json", default={})
+    online = []
+    for mac, info in gateways.items():
+        last_seen = info.get("lastSeen", "")
+        if last_seen:
+            try:
+                last_dt = datetime.fromisoformat(last_seen)
+                online.append({
+                    "mac": mac,
+                    "ip": info.get("ip"),
+                    "version": info.get("version"),
+                    "deviceCount": info.get("deviceCount", 0),
+                    "lastSeen": last_seen,
+                    "online": (datetime.now() - last_dt).seconds < 120,
+                })
+            except ValueError:
+                pass
+    return {"gateways": online, "total": len(online)}
+
+
 # ── 启动入口 ───────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
