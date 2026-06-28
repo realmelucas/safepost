@@ -2,9 +2,27 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>爱兔帮 SafeGuard 守岗系统 — 智能物流安全监护</title>
+    <style>
+      /* 防止白屏闪烁：在 JS 加载前显示加载提示 */
+      #root:empty::after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 40px;
+        margin: 40vh auto;
+        border: 3px solid #e5e7eb;
+        border-top-color: #1677ff;
+        border-radius: 50%;
+        animation: safespin 0.8s linear infinite;
+      }
+      @keyframes safespin { to { transform: rotate(360deg); } }
+    </style>
   </head>
   <body>
     <div id="root"></div>
