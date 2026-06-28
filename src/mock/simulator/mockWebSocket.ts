@@ -5,6 +5,7 @@ import { mockWorkers } from '../data/workers';
 import { VitalSignGenerator } from '../generators/vitalSignGenerator';
 import { generateDeviceInfo } from '../generators/deviceInfoGenerator';
 import { AlertSimulator } from './alertSimulator';
+import { generateUUID } from '../../utils/uuid';
 
 const GATEWAY_IP = '192.168.1.100';
 const GATEWAY_MAC = 'AA:BB:CC:DD:EE:FF';
@@ -43,7 +44,7 @@ export class MockWebSocketManager {
       if (onlineWorkers.length > 0) {
         const message: GatewayMessage = {
           v: GATEWAY_VERSION,
-          mid: crypto.randomUUID(),
+          mid: generateUUID(),
           time: Math.floor(Date.now() / 1000),
           ip: GATEWAY_IP,
           mac: GATEWAY_MAC,

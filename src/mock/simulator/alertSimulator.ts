@@ -1,5 +1,6 @@
 import type { AlertInfo, AlertType } from '../../types/alert';
 import type { WorkerInfo } from '../../types/worker';
+import { generateUUID } from '../../utils/uuid';
 
 export type AlertCallback = (alert: AlertInfo) => void;
 
@@ -53,7 +54,7 @@ export class AlertSimulator {
       const t = this.timelineTriggers[this.timelineIndex];
       const worker = onlineWorkers.find((w) => w.name === t.workerName);
       const alert: AlertInfo = {
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         type: t.type,
         workerName: t.workerName,
         workerId: worker?.id ?? t.workerId,
@@ -83,7 +84,7 @@ export class AlertSimulator {
         };
 
         const alert: AlertInfo = {
-          id: crypto.randomUUID(),
+          id: generateUUID(),
           type,
           workerName: worker.name,
           workerId: worker.id,
@@ -129,7 +130,7 @@ export class AlertSimulator {
     };
 
     const alert: AlertInfo = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       type,
       workerName: worker.name,
       workerId: worker.id,

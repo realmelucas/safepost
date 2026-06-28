@@ -1,8 +1,9 @@
 import type { WorkerInfo } from '../../types/worker';
+import { generateUUID } from '../../utils/uuid';
 
 export const mockWorkers: WorkerInfo[] = [
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '张三',
     employeeId: 'EMP001',
     mac: '53:57:08:03:00:01',
@@ -16,7 +17,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: '2026-06-27T07:30:00Z',
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '李四',
     employeeId: 'EMP002',
     mac: '53:57:08:03:00:02',
@@ -30,7 +31,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: '2026-06-27T07:30:00Z',
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '王五',
     employeeId: 'EMP003',
     mac: '53:57:08:03:00:03',
@@ -44,7 +45,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: '2026-06-27T07:25:00Z',
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '赵六',
     employeeId: 'EMP004',
     mac: '53:57:08:03:00:04',
@@ -58,7 +59,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: '2026-06-27T07:30:00Z',
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '孙七',
     employeeId: 'EMP005',
     mac: '53:57:08:03:00:05',
@@ -72,7 +73,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: '2026-06-27T07:28:00Z',
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '周八',
     employeeId: 'EMP006',
     mac: '53:57:08:03:00:06',
@@ -86,7 +87,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: '2026-06-27T07:30:00Z',
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '吴九',
     employeeId: 'EMP007',
     mac: '53:57:08:03:00:07',
@@ -100,7 +101,7 @@ export const mockWorkers: WorkerInfo[] = [
     lastCheckTime: undefined,
   },
   {
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     name: '郑十',
     employeeId: 'EMP008',
     mac: '53:57:08:03:00:08',
