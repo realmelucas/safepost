@@ -18,31 +18,7 @@ const LandingPage: React.FC = () => {
       {/* 导航栏 */}
       <nav className={`lp-nav${scrolled ? ' scrolled' : ''}`}>
         <div className="lp-nav-brand">
-          {/* 兔子 + 安全盾牌 Logo */}
-          <svg className="lp-logo-svg" viewBox="0 0 48 48" width="36" height="36">
-            <defs>
-              <linearGradient id="lpLogoGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#1677ff" />
-                <stop offset="100%" stopColor="#7e14ff" />
-              </linearGradient>
-            </defs>
-            {/* 盾牌 */}
-            <path d="M24 4L8 10v14c0 9.6 6.8 18.6 16 20 9.2-1.4 16-10.4 16-20V10L24 4z" fill="url(#lpLogoGrad)" opacity="0.15" />
-            <path d="M24 6L12 11v12c0 8 5.5 15.5 12 17 6.5-1.5 12-9 12-17V11L24 6z" fill="none" stroke="url(#lpLogoGrad)" strokeWidth="2" />
-            {/* 兔子头 */}
-            <ellipse cx="24" cy="22" rx="8" ry="9" fill="url(#lpLogoGrad)" />
-            {/* 耳朵 */}
-            <ellipse cx="18" cy="12" rx="3.5" ry="8" fill="url(#lpLogoGrad)" transform="rotate(-10,18,12)" />
-            <ellipse cx="30" cy="12" rx="3.5" ry="8" fill="url(#lpLogoGrad)" transform="rotate(10,30,12)" />
-            {/* 耳朵内侧 */}
-            <ellipse cx="18" cy="12" rx="2" ry="5.5" fill="#fff" opacity="0.5" transform="rotate(-10,18,12)" />
-            <ellipse cx="30" cy="12" rx="2" ry="5.5" fill="#fff" opacity="0.5" transform="rotate(10,30,12)" />
-            {/* 眼睛 */}
-            <circle cx="20" cy="21" r="1.5" fill="#fff" />
-            <circle cx="28" cy="21" r="1.5" fill="#fff" />
-            {/* 鼻子 */}
-            <ellipse cx="24" cy="25" rx="1.2" ry="0.8" fill="#fff" opacity="0.8" />
-          </svg>
+          <span className="lp-logo-icon">🛡️</span>
           <span className="lp-logo-text">爱兔帮 SafeGuard</span>
         </div>
         <div className="lp-nav-links">
@@ -247,19 +223,7 @@ const LandingPage: React.FC = () => {
       <footer className="lp-footer">
         <div className="lp-footer-content">
           <div className="lp-footer-brand">
-            <svg viewBox="0 0 24 24" width="20" height="20">
-              <defs>
-                <linearGradient id="lpFooterGrad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#1677ff" />
-                  <stop offset="100%" stopColor="#7e14ff" />
-                </linearGradient>
-              </defs>
-              <ellipse cx="12" cy="14" rx="6" ry="5" fill="url(#lpFooterGrad)" />
-              <ellipse cx="8" cy="7" rx="3" ry="6" fill="url(#lpFooterGrad)" transform="rotate(-10,8,7)" />
-              <ellipse cx="16" cy="7" rx="3" ry="6" fill="url(#lpFooterGrad)" transform="rotate(10,16,7)" />
-              <circle cx="10" cy="13" r="1" fill="#fff" />
-              <circle cx="14" cy="13" r="1" fill="#fff" />
-            </svg>
+            <span className="lp-logo-icon">🛡️</span>
             <span>爱兔帮 SafeGuard 守岗系统</span>
           </div>
           <p>© 2025 爱兔帮 SafeGuard. All rights reserved.</p>
