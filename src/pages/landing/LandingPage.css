@@ -129,24 +129,55 @@
   overflow: hidden;
 }
 
-.lp-hero-bg {
+/* 视频背景 */
+.lp-hero-video-wrap {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
+}
+
+.lp-hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.lp-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10, 10, 26, 0.75) 0%,
+    rgba(10, 20, 50, 0.65) 40%,
+    rgba(15, 10, 40, 0.7) 100%
+  );
+}
+
+.lp-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .lp-hero-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.5;
+  opacity: 0.3;
   animation: float 8s ease-in-out infinite;
 }
 
 .orb-1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(22, 119, 255, 0.3), transparent);
+  background: radial-gradient(circle, rgba(22, 119, 255, 0.25), transparent);
   top: -100px;
   right: -100px;
   animation-delay: 0s;
@@ -177,7 +208,7 @@
 
 .lp-hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 800px;
   padding: 40px 24px;
 }

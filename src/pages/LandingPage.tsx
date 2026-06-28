@@ -30,12 +30,23 @@ const LandingPage: React.FC = () => {
         </div>
       </nav>
 
-      {/* Hero 首屏 */}
+      {/* Hero 首屏 — 视频背景 */}
       <section className="lp-hero">
+        <div className="lp-hero-video-wrap">
+          <video
+            className="lp-hero-video"
+            src="/videos/product-demo.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          />
+          <div className="lp-hero-overlay" />
+        </div>
         <div className="lp-hero-bg">
           <div className="lp-hero-orb orb-1" />
           <div className="lp-hero-orb orb-2" />
-          <div className="lp-hero-orb orb-3" />
         </div>
         <div className="lp-hero-content">
           <p className="lp-hero-tag">AI 驱动的物流安全监护</p>
