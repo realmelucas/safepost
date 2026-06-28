@@ -24,22 +24,22 @@ interface AppSiderProps {
 
 const menuItems = [
   {
-    key: '/dashboard',
+    key: '/app/dashboard',
     icon: <DashboardOutlined />,
     label: '实时监控大盘',
   },
   {
-    key: '/alerts',
+    key: '/app/alerts',
     icon: <AlertOutlined />,
     label: '报警管理',
   },
   {
-    key: '/workers',
+    key: '/app/workers',
     icon: <TeamOutlined />,
     label: '工人管理',
   },
   {
-    key: '/settings',
+    key: '/app/settings',
     icon: <SettingOutlined />,
     label: '系统配置',
   },
@@ -57,7 +57,11 @@ const AppSider: React.FC<AppSiderProps> = ({ collapsed, onCollapse }) => {
     return () => clearInterval(timer);
   }, []);
 
-  const selectedKey = '/' + location.pathname.split('/')[1] || '/dashboard';
+  const selectedKey = (() => {
+    const path = location.pathname;
+    const match = path.match(/^\/app\/([^/]+)/);
+    return match ? `/app/${match[1]}` : '/app/dashboard';
+  })();
 
   const formatTime = (date: Date) => {
     const h = date.getHours().toString().padStart(2, '0');

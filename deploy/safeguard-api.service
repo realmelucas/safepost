@@ -1,0 +1,27 @@
+[Unit]
+Description=SafeGuard 爱兔帮守岗系统 - 飞书集成服务
+After=network.target
+Documentation=https://github.com/realmelucas/safepost
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/safeguard-web/server
+ExecStart=/opt/safeguard-web/server/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=safeguard-api
+EnvironmentFile=/opt/safeguard-web/server/.env
+
+# 安全加固
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/safeguard-web/server
+
+[Install]
+WantedBy=multi-user.target

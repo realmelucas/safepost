@@ -16,7 +16,7 @@ const ThemeContext = createContext<ThemeContextValue>({
   setTheme: () => {},
 });
 
-const THEME_STORAGE_KEY = 'safepost-theme';
+const THEME_STORAGE_KEY = 'safeguard-theme';
 
 const getInitialTheme = (): ThemeMode => {
   try {

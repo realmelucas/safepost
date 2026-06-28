@@ -1,5 +1,5 @@
 // ============================================
-// SafePost System Constants
+// SafeGuard System Constants
 // ============================================
 
 /** Vital sign thresholds */
@@ -84,6 +84,6 @@ export const ALERT_TYPE_CONFIG: Record<string, { label: string; color: string; i
 };
 
 /** App metadata */
-export const APP_NAME = 'SafePost';
-export const APP_SUBTITLE = 'AI兔帮守岗';
-export const APP_VERSION = '1.0.0';
+export const APP_NAME = 'SafeGuard';
+export const APP_SUBTITLE = '爱兔帮守岗系统';
+export const APP_VERSION = '2.0.0';

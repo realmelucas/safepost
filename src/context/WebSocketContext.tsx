@@ -42,11 +42,11 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       .then(data => {
         if (data.status === 'healthy') {
           setFeishuEnabled(true);
-          console.log('[SafePost] 飞书集成服务已连接');
+          console.log('[SafeGuard] 飞书集成服务已连接');
         }
       })
       .catch(() => {
-        console.log('[SafePost] 飞书集成服务未启动，报警将仅在本地显示');
+        console.log('[SafeGuard] 飞书集成服务未启动，报警将仅在本地显示');
       });
   }, []);
 
@@ -66,7 +66,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       // 自动推送到飞书
       if (feishuEnabled) {
         sendAlertToFeishu(alert).then((ok) => {
-          console.log(`[SafePost] 飞书推送${ok ? '成功' : '失败'}: ${alert.type} - ${alert.workerName}`);
+          console.log(`[SafeGuard] 飞书推送${ok ? '成功' : '失败'}: ${alert.type} - ${alert.workerName}`);
         });
       }
     });
@@ -98,7 +98,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           action,
           remark
         ).then((ok) => {
-          console.log(`[SafePost] 飞书处置通知推送${ok ? '成功' : '失败'}`);
+          console.log(`[SafeGuard] 飞书处置通知推送${ok ? '成功' : '失败'}`);
         });
       }
     }

@@ -1,5 +1,5 @@
 """
-SafePost 飞书集成后端服务
+SafeGuard 飞书集成后端服务
 ==========================
 提供以下能力：
 1. 飞书自建应用鉴权（tenant_access_token）
@@ -25,9 +25,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI(
-    title="SafePost 飞书集成服务",
+    title="SafeGuard 飞书集成服务",
     version="1.0.0",
-    description="AI兔帮守岗 - 飞书消息推送与交互服务"
+    description="爱兔帮守岗系统 - 飞书消息推送与交互服务"
 )
 
 app.add_middleware(
@@ -126,7 +126,7 @@ def build_sos_card(worker_name: str, worker_id: str, location: str,
                     {"tag": "button", "text": {"tag": "plain_text", "content": "📞 拨打联系人"}, "type": "default"}
                 ]},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafePost 智能卡安全监护系统 · 自动报警"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafeGuard 智能卡安全监护系统 · 自动报警"}]}
             ]
         }
     }
@@ -155,7 +155,7 @@ def build_vital_card(worker_name: str, worker_id: str, location: str,
                     {"tag": "button", "text": {"tag": "plain_text", "content": "👀 持续观察"}, "type": "default"}
                 ]},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafePost 智能卡安全监护系统 · 自动报警"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafeGuard 智能卡安全监护系统 · 自动报警"}]}
             ]
         }
     }
@@ -179,7 +179,7 @@ def build_lost_card(worker_name: str, worker_id: str, last_location: str,
                     {"tag": "button", "text": {"tag": "plain_text", "content": "📹 查看监控"}, "type": "default"}
                 ]},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafePost 智能卡安全监护系统 · 自动报警"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafeGuard 智能卡安全监护系统 · 自动报警"}]}
             ]
         }
     }
@@ -194,17 +194,17 @@ def build_daily_report(stats: dict, date_str: str = "") -> dict:
         "msg_type": "interactive",
         "card": {
             "header": {
-                "title": {"tag": "plain_text", "content": "📊 SafePost 安全日报"},
+                "title": {"tag": "plain_text", "content": "📊 SafeGuard 安全日报"},
                 "template": "blue"
             },
             "elements": [
                 {"tag": "div", "text": {"tag": "lark_md", "content": f"**{date_str} · 物流转运中心安全监护日报**\n\n---\n**📋 在岗概况**\n\n| 指标 | 数值 |\n| --- | --- |\n| 👷 应到工人 | {stats.get('total', 0)}人 |\n| ✅ 在岗正常 | {stats.get('normal', 0)}人 |\n| ⚠️ 体征异常 | {stats.get('vital_abnormal', 0)}人 |\n| 🔴 触发报警 | {stats.get('alerts_total', 0)}次 |\n| 📡 设备离线 | {stats.get('offline', 0)}人 |\n\n---\n**📈 报警统计**\n\n| 类型 | 次数 | 处置率 |\n| --- | --- | --- |\n| 🚨 SOS | {stats.get('sos_count', 0)} | {stats.get('sos_rate', '100%')} |\n| 📡 失联 | {stats.get('lost_count', 0)} | {stats.get('lost_rate', '100%')} |\n| ❓ 无响应 | {stats.get('no_response_count', 0)} | {stats.get('no_response_rate', '-')} |\n| 🫀 体征异常 | {stats.get('vital_count', 0)} | {stats.get('vital_rate', '100%')} |\n\n---\n**⏱️ 平均响应时间**：{stats.get('avg_response', 'N/A')}\n\n**📟 重点关注**\n{stats.get('focus_items', '- 无特殊关注事项')}"}},
                 {"tag": "action", "actions": [
-                    {"tag": "button", "text": {"tag": "plain_text", "content": "📋 查看详细日报"}, "type": "primary", "url": "https://realmelucas.github.io/safepost/"},
-                    {"tag": "button", "text": {"tag": "plain_text", "content": "⚙️ 系统配置"}, "type": "default", "url": "https://realmelucas.github.io/safepost/"}
+                    {"tag": "button", "text": {"tag": "plain_text", "content": "📋 查看详细日报"}, "type": "primary", "url": "https://your-domain.com/"},
+                    {"tag": "button", "text": {"tag": "plain_text", "content": "⚙️ 系统配置"}, "type": "default", "url": "https://your-domain.com/"}
                 ]},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": f"🤖 SafePost 智能卡安全监护系统 · 每日 08:00 自动推送"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": f"🤖 SafeGuard 智能卡安全监护系统 · 每日 08:00 自动推送"}]}
             ]
         }
     }
@@ -222,17 +222,17 @@ def build_weekly_report(stats: dict, week_range: str = "") -> dict:
         "msg_type": "interactive",
         "card": {
             "header": {
-                "title": {"tag": "plain_text", "content": "📈 SafePost 安全周报"},
+                "title": {"tag": "plain_text", "content": "📈 SafeGuard 安全周报"},
                 "template": "turquoise"
             },
             "elements": [
                 {"tag": "div", "text": {"tag": "lark_md", "content": f"**{week_range} · 安全监护周报**\n\n---\n**📊 本周概览**\n\n| 指标 | 数值 | 环比 |\n| --- | --- | --- |\n| 👷 日均在岗 | {stats.get('avg_workers', 0)}人 | {stats.get('worker_change', '持平')} |\n| 🔴 报警总数 | {stats.get('total_alerts', 0)}次 | {stats.get('alert_change', '持平')} |\n| ⏱️ 平均响应 | {stats.get('avg_response', 'N/A')} | {stats.get('response_change', '持平')} |\n| ✅ 处置率 | {stats.get('resolve_rate', '100%')} | {stats.get('resolve_change', '持平')} |\n\n---\n**📈 每日报警趋势**\n\n| 日期 | SOS | 失联 | 无响应 | 体征异常 |\n| --- | --- | --- | --- | --- |\n{stats.get('daily_trend', '| - | 0 | 0 | 0 | 0 |')}\n\n---\n**📟 本周重点事件**\n{stats.get('key_events', '- 无重大事件')}\n\n**💡 改进建议**\n{stats.get('suggestions', '- 持续保持当前安全管理水平')}"}},
                 {"tag": "action", "actions": [
-                    {"tag": "button", "text": {"tag": "plain_text", "content": "📋 查看完整周报"}, "type": "primary", "url": "https://realmelucas.github.io/safepost/"},
-                    {"tag": "button", "text": {"tag": "plain_text", "content": "📊 数据大盘"}, "type": "default", "url": "https://realmelucas.github.io/safepost/"}
+                    {"tag": "button", "text": {"tag": "plain_text", "content": "📋 查看完整周报"}, "type": "primary", "url": "https://your-domain.com/"},
+                    {"tag": "button", "text": {"tag": "plain_text", "content": "📊 数据大盘"}, "type": "default", "url": "https://your-domain.com/"}
                 ]},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafePost 智能卡安全监护系统 · 每周一 09:00 自动推送"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafeGuard 智能卡安全监护系统 · 每周一 09:00 自动推送"}]}
             ]
         }
     }
@@ -247,17 +247,17 @@ def build_monthly_report(stats: dict, month_str: str = "") -> dict:
         "msg_type": "interactive",
         "card": {
             "header": {
-                "title": {"tag": "plain_text", "content": "📋 SafePost 安全月报"},
+                "title": {"tag": "plain_text", "content": "📋 SafeGuard 安全月报"},
                 "template": "purple"
             },
             "elements": [
                 {"tag": "div", "text": {"tag": "lark_md", "content": f"**{month_str} · 安全监护月度报告**\n\n---\n**📊 月度KPI**\n\n| 指标 | 数值 | 目标 | 达成 |\n| --- | --- | --- | --- |\n| 🔴 报警总数 | {stats.get('total_alerts', 0)}次 | <50次 | {stats.get('alert_kpi', '✅')} |\n| ⏱️ 平均响应 | {stats.get('avg_response', 'N/A')} | <3分钟 | {stats.get('response_kpi', '✅')} |\n| ✅ 处置率 | {stats.get('resolve_rate', '100%')} | 100% | {stats.get('resolve_kpi', '✅')} |\n| 🎯 误报率 | {stats.get('false_rate', '0%')} | <5% | {stats.get('false_kpi', '✅')} |\n| 📡 在线率 | {stats.get('online_rate', '99%')} | >95% | {stats.get('online_kpi', '✅')} |\n\n---\n**📈 报警类型分布**\n\n| 类型 | 次数 | 占比 |\n| --- | --- | --- |\n| 🚨 SOS | {stats.get('sos_count', 0)} | {stats.get('sos_pct', '0%')} |\n| 📡 失联 | {stats.get('lost_count', 0)} | {stats.get('lost_pct', '0%')} |\n| ❓ 无响应 | {stats.get('no_response_count', 0)} | {stats.get('nr_pct', '0%')} |\n| 🫀 体征异常 | {stats.get('vital_count', 0)} | {stats.get('vital_pct', '0%')} |\n\n---\n**📟 月度总结**\n{stats.get('summary', '- 本月安全管理运行正常')}\n\n**🔮 下月计划**\n{stats.get('next_plan', '- 持续优化安全管理流程')}"}},
                 {"tag": "action", "actions": [
-                    {"tag": "button", "text": {"tag": "plain_text", "content": "📋 查看完整月报"}, "type": "primary", "url": "https://realmelucas.github.io/safepost/"},
-                    {"tag": "button", "text": {"tag": "plain_text", "content": "📊 数据分析"}, "type": "default", "url": "https://realmelucas.github.io/safepost/"}
+                    {"tag": "button", "text": {"tag": "plain_text", "content": "📋 查看完整月报"}, "type": "primary", "url": "https://your-domain.com/"},
+                    {"tag": "button", "text": {"tag": "plain_text", "content": "📊 数据分析"}, "type": "default", "url": "https://your-domain.com/"}
                 ]},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafePost 智能卡安全监护系统 · 每月1日 10:00 自动推送"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafeGuard 智能卡安全监护系统 · 每月1日 10:00 自动推送"}]}
             ]
         }
     }
@@ -305,7 +305,7 @@ class ResolvePayload(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"service": "SafePost 飞书集成服务", "version": "1.0.0", "status": "running"}
+    return {"service": "SafeGuard 飞书集成服务", "version": "1.0.0", "status": "running"}
 
 
 @app.post("/api/alert/send")
@@ -339,7 +339,7 @@ async def send_alert(payload: AlertPayload):
         # no_response 或其他，使用文本消息
         card = {
             "msg_type": "text",
-            "content": {"text": f"⚠️ SafePost 报警\n\n工人 {payload.worker_name} 在 {payload.location} 触发「无响应」报警\n触发时间：{triggered_at}"}
+            "content": {"text": f"⚠️ SafeGuard 报警\n\n工人 {payload.worker_name} 在 {payload.location} 触发「无响应」报警\n触发时间：{triggered_at}"}
         }
 
     result = await feishu.send_webhook(card)
@@ -361,7 +361,7 @@ async def send_resolve_notification(payload: ResolvePayload):
             "elements": [
                 {"tag": "div", "text": {"tag": "lark_md", "content": text}},
                 {"tag": "hr"},
-                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafePost 智能卡安全监护系统"}]}
+                {"tag": "note", "elements": [{"tag": "plain_text", "content": "🤖 SafeGuard 智能卡安全监护系统"}]}
             ]
         }
     }

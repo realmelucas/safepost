@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { createHashRouter, Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
 import AppLayout from '../components/layout/AppLayout';
+import LandingPage from '../pages/LandingPage';
 
 // Lazy-loaded pages
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
@@ -26,11 +27,15 @@ const withSuspense = (Component: React.LazyExoticComponent<React.FC>) => (
 export const router = createHashRouter([
   {
     path: '/',
+    element: <LandingPage />,
+  },
+  {
+    path: '/app',
     element: <AppLayout />,
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboard" replace />,
+        element: <Navigate to="/app/dashboard" replace />,
       },
       {
         path: 'dashboard',

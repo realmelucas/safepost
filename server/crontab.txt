@@ -1,4 +1,4 @@
-# SafePost 飞书定时推送 - Crontab 配置
+# SafeGuard 飞书定时推送 - Crontab 配置
 # =========================================
 # 将以下内容添加到 crontab:
 #   crontab -e

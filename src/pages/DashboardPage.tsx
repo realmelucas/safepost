@@ -19,7 +19,7 @@ const DashboardPage: React.FC = () => {
     : null;
 
   const handleViewAllAlerts = () => {
-    window.location.href = '/alerts';
+    window.location.href = '#/app/alerts';
   };
 
   return (
