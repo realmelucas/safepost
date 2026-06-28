@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Layout, Select, Badge, Space, Avatar, Dropdown, Typography } from 'antd';
 import {
   MenuFoldOutlined,
@@ -9,6 +9,7 @@ import {
   CheckCircleFilled,
 } from '@ant-design/icons';
 import { TRANSFER_CENTERS } from '../../config/constants';
+import { WebSocketContext } from '../../context/WebSocketContext';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -20,6 +21,10 @@ interface AppHeaderProps {
 
 const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle }) => {
   const [center, setCenter] = React.useState('shenzhen');
+  const { workers, alerts, feishuEnabled } = useContext(WebSocketContext);
+
+  const onlineCount = workers.filter(w => w.status === 'on_duty').length;
+  const unprocessedAlerts = alerts.filter(a => !a.processed).length;
 
   const userMenuItems = [
     {
@@ -71,19 +76,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({ collapsed, onToggle }) => {
         <Space size={4}>
           <Badge status="success" />
           <Text style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-            在线工人 <Text strong style={{ color: 'var(--color-safe)' }}>128</Text>
+            在线工人 <Text strong style={{ color: 'var(--color-safe)' }}>{onlineCount}</Text>
           </Text>
         </Space>
         <Space size={4}>
-          <CheckCircleFilled style={{ color: 'var(--color-safe)', fontSize: 12 }} />
+          <CheckCircleFilled style={{ color: feishuEnabled ? 'var(--color-safe)' : 'var(--color-danger)', fontSize: 12 }} />
           <Text style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-            飞书 <Text strong style={{ color: 'var(--color-safe)' }}>已连接</Text>
+            飞书 <Text strong style={{ color: feishuEnabled ? 'var(--color-safe)' : 'var(--color-danger)' }}>{feishuEnabled ? '已连接' : '未连接'}</Text>
           </Text>
         </Space>
         <Space size={4}>
-          <Badge status="error" />
+          <Badge status={unprocessedAlerts > 0 ? 'error' : 'success'} />
           <Text style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
-            未处理报警 <Text strong style={{ color: 'var(--color-danger)' }}>3</Text>
+            未处理报警 <Text strong style={{ color: unprocessedAlerts > 0 ? 'var(--color-danger)' : 'var(--color-text-secondary)' }}>{unprocessedAlerts}</Text>
           </Text>
         </Space>
       </Space>

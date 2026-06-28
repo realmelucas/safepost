@@ -82,10 +82,9 @@ const WorkerCardGrid: React.FC = () => {
   const handleClick = (workerId: string) => {
     const alert = alertMap.get(workerId);
     if (alert) {
-      // 使用 window.location 跳转
-      window.location.href = '/alerts';
+      window.location.href = '#/app/alerts';
     } else {
-      window.location.href = '/workers';
+      window.location.href = '#/app/workers';
     }
   };
 

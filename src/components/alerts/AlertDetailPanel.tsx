@@ -92,7 +92,7 @@ const AlertDetailPanel: React.FC<AlertDetailPanelProps> = ({ alert, onProcess })
           {alert.location}
         </Descriptions.Item>
         <Descriptions.Item label={<><AimOutlined /> 手环MAC</>}>
-          {alert.workerId}
+          {alert.workerId || '未绑定'}
         </Descriptions.Item>
       </Descriptions>
 

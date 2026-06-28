@@ -9,6 +9,7 @@ SafeGuard 飞书集成后端服务
 """
 import os
 import json
+import uuid
 import hashlib
 import time
 import asyncio
@@ -489,6 +490,214 @@ async def health():
         "webhook_configured": bool(WEBHOOK_URL),
         "app_configured": bool(APP_ID and APP_SECRET),
         "timestamp": datetime.now().isoformat()
+    }
+
+
+# ══════════════════════════════════════════════════════
+# 数据持久化层（JSON 文件存储）
+# ══════════════════════════════════════════════════════
+import threading
+from pathlib import Path
+
+DATA_DIR = Path(os.getenv("DATA_DIR", os.path.join(os.getcwd(), "data")))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+_file_lock = threading.Lock()
+
+
+def _read_json(filename: str, default=None) -> dict | list:
+    """读取 JSON 文件，不存在则返回默认值"""
+    filepath = DATA_DIR / filename
+    if not filepath.exists():
+        return default if default is not None else {}
+    try:
+        with open(filepath, "r") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, IOError):
+        return default if default is not None else {}
+
+
+def _write_json(filename: str, data: dict | list):
+    """原子写入 JSON 文件"""
+    filepath = DATA_DIR / filename
+    tmp = filepath.with_suffix(".tmp")
+    with _file_lock:
+        with open(tmp, "w") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        tmp.replace(filepath)
+
+
+# ══════════════════════════════════════════════════════
+# Workers API
+# ══════════════════════════════════════════════════════
+
+class WorkerCreate(BaseModel):
+    name: str
+    employee_id: str = ""
+    mac: str = ""
+    card_id: str = ""
+    position: str = ""
+    status: str = "pending_check"
+
+
+class WorkerUpdate(BaseModel):
+    name: str = ""
+    employee_id: str = ""
+    mac: str = ""
+    card_id: str = ""
+    position: str = ""
+    status: str = ""
+
+
+@app.get("/api/workers")
+async def list_workers():
+    """获取所有工人"""
+    return _read_json("workers.json", default=[])
+
+
+@app.post("/api/workers")
+async def create_worker(payload: WorkerCreate):
+    """添加工人"""
+    workers = _read_json("workers.json", default=[])
+    worker = {
+        "id": str(uuid.uuid4()),
+        "name": payload.name,
+        "employeeId": payload.employee_id or f"EMP{len(workers)+1:03d}",
+        "mac": payload.mac,
+        "cardId": payload.card_id,
+        "position": payload.position,
+        "status": payload.status,
+        "gatewayRssi": 0,
+        "createdAt": datetime.now().isoformat(),
+    }
+    workers.append(worker)
+    _write_json("workers.json", workers)
+    return {"success": True, "worker": worker}
+
+
+@app.put("/api/workers/{worker_id}")
+async def update_worker(worker_id: str, payload: WorkerUpdate):
+    """更新工人信息"""
+    workers = _read_json("workers.json", default=[])
+    for w in workers:
+        if w.get("id") == worker_id:
+            if payload.name: w["name"] = payload.name
+            if payload.employee_id: w["employeeId"] = payload.employee_id
+            if payload.mac: w["mac"] = payload.mac
+            if payload.card_id: w["cardId"] = payload.card_id
+            if payload.position: w["position"] = payload.position
+            if payload.status: w["status"] = payload.status
+            w["updatedAt"] = datetime.now().isoformat()
+            _write_json("workers.json", workers)
+            return {"success": True, "worker": w}
+    raise HTTPException(status_code=404, detail="Worker not found")
+
+
+@app.delete("/api/workers/{worker_id}")
+async def delete_worker(worker_id: str):
+    """删除工人"""
+    workers = _read_json("workers.json", default=[])
+    workers = [w for w in workers if w.get("id") != worker_id]
+    _write_json("workers.json", workers)
+    return {"success": True}
+
+
+# ══════════════════════════════════════════════════════
+# Alerts API
+# ══════════════════════════════════════════════════════
+
+@app.get("/api/alerts")
+async def list_alerts(limit: int = 100, offset: int = 0, processed: str = "all"):
+    """获取报警列表"""
+    alerts = _read_json("alerts.json", default=[])
+    if processed == "true":
+        alerts = [a for a in alerts if a.get("processed")]
+    elif processed == "false":
+        alerts = [a for a in alerts if not a.get("processed")]
+    alerts.sort(key=lambda a: a.get("triggeredAt", ""), reverse=True)
+    return alerts[offset:offset + limit]
+
+
+# ══════════════════════════════════════════════════════
+# Config API
+# ══════════════════════════════════════════════════════
+
+DEFAULT_CONFIG = {
+    "feishu": {
+        "appId": "",
+        "appSecret": "",
+        "webhookUrl": WEBHOOK_URL,
+    },
+    "alertRules": {
+        "temperatureMax": 38.0,
+        "temperatureMin": 35.0,
+        "heartRateMax": 120,
+        "heartRateMin": 50,
+        "spo2Min": 94,
+        "lostTimeout": 30,
+        "sosTimeout": 30,
+        "noResponseTimeout": 60,
+    },
+    "pushStrategy": {
+        "dailyEnabled": True,
+        "dailyTime": "08:00",
+        "weeklyEnabled": True,
+        "weeklyTime": "09:00",
+        "monthlyEnabled": True,
+        "monthlyTime": "10:00",
+    },
+}
+
+
+@app.get("/api/config")
+async def get_config():
+    """获取系统配置"""
+    config = _read_json("config.json", default=None)
+    if config is None or config == {}:
+        config = DEFAULT_CONFIG
+        _write_json("config.json", config)
+    return config
+
+
+@app.put("/api/config")
+async def update_config(payload: dict):
+    """更新系统配置"""
+    config = _read_json("config.json", default=DEFAULT_CONFIG)
+    # 深度合并
+    for section in payload:
+        if section in config and isinstance(config[section], dict):
+            config[section].update(payload[section])
+    _write_json("config.json", config)
+    return {"success": True, "config": config}
+
+
+# ══════════════════════════════════════════════════════
+# Stats API
+# ══════════════════════════════════════════════════════
+
+@app.get("/api/stats")
+async def get_stats():
+    """获取实时统计数据"""
+    workers = _read_json("workers.json", default=[])
+    alerts = _read_json("alerts.json", default=[])
+
+    total = len(workers)
+    online = sum(1 for w in workers if w.get("status") == "on_duty")
+    offline = sum(1 for w in workers if w.get("status") == "offline")
+
+    unprocessed = [a for a in alerts if not a.get("processed")]
+    sos = sum(1 for a in unprocessed if a.get("type") == "sos")
+    lost = sum(1 for a in unprocessed if a.get("type") == "lost")
+
+    return {
+        "totalWorkers": total,
+        "onlineWorkers": online,
+        "offlineWorkers": offline,
+        "unprocessedAlerts": len(unprocessed),
+        "sosAlerts": sos,
+        "lostAlerts": lost,
+        "onlineRate": round(online / total * 100, 1) if total > 0 else 0,
+        "timestamp": datetime.now().isoformat(),
     }
 
 

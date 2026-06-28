@@ -3,6 +3,7 @@ import { Card, Typography, Space, Row, Col } from 'antd';
 import dayjs from 'dayjs';
 import type { WorkerInfo } from '../../types/worker';
 import type { VitalSignData } from '../../types/common';
+import { VITAL_THRESHOLDS } from '../../config/constants';
 import type { AlertInfo } from '../../types/alert';
 import { ALERT_TYPE_CONFIG } from '../../types/alert';
 import { VitalSignGauge, BatteryIndicator, SignalStrength, WorkerStatusIcon, AlertStatusTag } from '../common';
@@ -61,10 +62,10 @@ const getWorkDuration = (workStartTime?: string): string => {
 };
 
 const isVitalAbnormal = (type: 'temperature' | 'heartRate' | 'spo2', value: number | null): boolean => {
-  if (value === null) return false;
-  if (type === 'temperature') return value < 35.0 || value > 38.5;
-  if (type === 'heartRate') return value < 40 || value > 120;
-  if (type === 'spo2') return value < 94;
+  if (value === null || value === 0) return false;
+  if (type === 'temperature') return value < VITAL_THRESHOLDS.temperature.min || value > VITAL_THRESHOLDS.temperature.max;
+  if (type === 'heartRate') return value < VITAL_THRESHOLDS.heartRate.min || value > VITAL_THRESHOLDS.heartRate.max;
+  if (type === 'spo2') return value < VITAL_THRESHOLDS.spo2.min;
   return false;
 };
 

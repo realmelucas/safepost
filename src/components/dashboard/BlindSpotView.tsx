@@ -9,12 +9,20 @@ import { useWebSocketData } from '../../hooks/useWebSocketData';
 
 const { Text } = Typography;
 
-// 车厢配置：位置名 → 车厢编号 → 显示位置
+// 车厢配置
 const CARRIAGE_CONFIG: Record<string, { id: string; label: string; x: number; y: number }> = {
   '车厢A区': { id: 'A', label: 'A区', x: 20, y: 20 },
   '车厢B区': { id: 'B', label: 'B区', x: 310, y: 20 },
   '车厢C区': { id: 'C', label: 'C区', x: 20, y: 240 },
   '车厢D区': { id: 'D', label: 'D区', x: 310, y: 240 },
+};
+
+// 岗亭 → 车厢映射
+const POSITION_TO_CARRIAGE: Record<string, string> = {
+  '1号岗亭': '车厢A区', '2号岗亭': '车厢A区',
+  '3号岗亭': '车厢B区', '4号岗亭': '车厢B区',
+  '5号岗亭': '车厢C区', '6号岗亭': '车厢C区',
+  '7号岗亭': '车厢D区', '8号岗亭': '车厢D区',
 };
 
 const CARRIAGE_W = 270;
@@ -129,9 +137,9 @@ const BlindSpotView: React.FC = () => {
   const carriageGroups = new Map<string, WorkerInfo[]>();
   workers.forEach(w => {
     const pos = w.position || '未知';
-    const key = CARRIAGE_CONFIG[pos] ? pos : '车厢A区'; // fallback
-    if (!carriageGroups.has(key)) carriageGroups.set(key, []);
-    carriageGroups.get(key)!.push(w);
+    const carriage = POSITION_TO_CARRIAGE[pos] || '车厢A区';
+    if (!carriageGroups.has(carriage)) carriageGroups.set(carriage, []);
+    carriageGroups.get(carriage)!.push(w);
   });
 
   const devices = realtimeData?.devices || [];
