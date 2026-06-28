@@ -3,7 +3,6 @@ import './landing/LandingPage.css';
 
 /**
  * 爱兔帮 SafeGuard 守岗系统 — 官网首页
- * Landing Page，独立于管理后台
  */
 const LandingPage: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -19,18 +18,43 @@ const LandingPage: React.FC = () => {
       {/* 导航栏 */}
       <nav className={`lp-nav${scrolled ? ' scrolled' : ''}`}>
         <div className="lp-nav-brand">
-          <span className="lp-logo-icon">🛡️</span>
+          {/* 兔子 + 安全盾牌 Logo */}
+          <svg className="lp-logo-svg" viewBox="0 0 48 48" width="36" height="36">
+            <defs>
+              <linearGradient id="lpLogoGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#1677ff" />
+                <stop offset="100%" stopColor="#7e14ff" />
+              </linearGradient>
+            </defs>
+            {/* 盾牌 */}
+            <path d="M24 4L8 10v14c0 9.6 6.8 18.6 16 20 9.2-1.4 16-10.4 16-20V10L24 4z" fill="url(#lpLogoGrad)" opacity="0.15" />
+            <path d="M24 6L12 11v12c0 8 5.5 15.5 12 17 6.5-1.5 12-9 12-17V11L24 6z" fill="none" stroke="url(#lpLogoGrad)" strokeWidth="2" />
+            {/* 兔子头 */}
+            <ellipse cx="24" cy="22" rx="8" ry="9" fill="url(#lpLogoGrad)" />
+            {/* 耳朵 */}
+            <ellipse cx="18" cy="12" rx="3.5" ry="8" fill="url(#lpLogoGrad)" transform="rotate(-10,18,12)" />
+            <ellipse cx="30" cy="12" rx="3.5" ry="8" fill="url(#lpLogoGrad)" transform="rotate(10,30,12)" />
+            {/* 耳朵内侧 */}
+            <ellipse cx="18" cy="12" rx="2" ry="5.5" fill="#fff" opacity="0.5" transform="rotate(-10,18,12)" />
+            <ellipse cx="30" cy="12" rx="2" ry="5.5" fill="#fff" opacity="0.5" transform="rotate(10,30,12)" />
+            {/* 眼睛 */}
+            <circle cx="20" cy="21" r="1.5" fill="#fff" />
+            <circle cx="28" cy="21" r="1.5" fill="#fff" />
+            {/* 鼻子 */}
+            <ellipse cx="24" cy="25" rx="1.2" ry="0.8" fill="#fff" opacity="0.8" />
+          </svg>
           <span className="lp-logo-text">爱兔帮 SafeGuard</span>
         </div>
         <div className="lp-nav-links">
           <a href="#features">核心能力</a>
-          <a href="#hardware">硬件方案</a>
+          <a href="#solution">解决方案</a>
+          <a href="#ai-system">AI 守岗</a>
           <a href="#feishu">飞书集成</a>
           <a href="#/app/dashboard" className="lp-nav-cta">进入系统</a>
         </div>
       </nav>
 
-      {/* 首屏 Hero */}
+      {/* Hero 首屏 */}
       <section className="lp-hero">
         <div className="lp-hero-bg">
           <div className="lp-hero-orb orb-1" />
@@ -38,14 +62,14 @@ const LandingPage: React.FC = () => {
           <div className="lp-hero-orb orb-3" />
         </div>
         <div className="lp-hero-content">
-          <p className="lp-hero-tag">智能物流安全监护</p>
+          <p className="lp-hero-tag">AI 驱动的物流安全监护</p>
           <h1 className="lp-hero-title">
             爱兔帮 <span className="lp-gradient">SafeGuard</span>
           </h1>
           <h2 className="lp-hero-subtitle">守岗系统</h2>
           <p className="lp-hero-desc">
-            基于 T10 智能手环 + 蓝牙网关 + 飞书深度集成<br />
-            为物流工作者提供 24/7 上岗准入与安全监护
+            智能穿戴 + AI 分析 + 飞书即时响应<br />
+            <strong>确保每个物流工作人员的生命安全</strong>
           </p>
           <div className="lp-hero-actions">
             <a href="#/app/dashboard" className="lp-btn lp-btn-primary">
@@ -61,17 +85,17 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 核心能力占位 */}
+      {/* 核心能力 */}
       <section id="features" className="lp-section">
         <div className="lp-container">
           <h3 className="lp-section-title">核心能力</h3>
-          <p className="lp-section-desc">四大核心能力，全方位守护物流工作者的安全</p>
+          <p className="lp-section-desc">四重守护，确保每个物流工作人员的生命安全</p>
           <div className="lp-features-grid">
             {[
-              { icon: '❤️', title: '实时体征监测', desc: '体温、心率、血氧、血压实时采集，异常自动预警' },
-              { icon: '🚨', title: '智能报警联动', desc: 'SOS 紧急求救、失联告警、无响应检测，分级响应' },
-              { icon: '📱', title: '飞书即时推送', desc: '报警卡片消息、按钮交互处置、定时日报周报推送' },
-              { icon: '📊', title: '数据分析报告', desc: '日报、周报、月报自动生成，安全管理可视化' },
+              { icon: '❤️', title: '实时体征监测', desc: '体温、心率、血氧、血压实时采集，异常数据秒级预警，让健康隐患无所遁形' },
+              { icon: '🚨', title: '智能报警联动', desc: 'SOS 紧急求救、失联告警、无响应检测，多级响应机制，确保每一次报警都被及时处理' },
+              { icon: '📱', title: '飞书即时推送', desc: '报警卡片消息直达飞书群、按钮交互处置、定时日报周报推送，管理不掉线' },
+              { icon: '🧠', title: 'AI 智能分析', desc: '基于历史数据的智能风险预测，异常模式识别，从被动响应走向主动预防' },
             ].map((f, i) => (
               <div key={i} className="lp-feature-card">
                 <div className="lp-feature-icon">{f.icon}</div>
@@ -83,49 +107,76 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 硬件方案占位 */}
-      <section id="hardware" className="lp-section lp-section-alt">
+      {/* 解决方案 */}
+      <section id="solution" className="lp-section lp-section-alt">
         <div className="lp-container">
-          <h3 className="lp-section-title">硬件方案</h3>
-          <p className="lp-section-desc">T10 智能手环 + 蓝牙网关，稳定可靠的硬件基础</p>
-          <div className="lp-hardware-grid">
-            <div className="lp-hw-card">
-              <div className="lp-hw-icon">⌚</div>
-              <h4>T10 智能手环</h4>
-              <ul>
-                <li>Nordic NRF52832 BLE 5.0</li>
-                <li>TI TMP117 高精度体温 (±0.1°C)</li>
-                <li>HX3690L 心率/血氧传感器</li>
-                <li>SOS 一键求救 (0x02 广播)</li>
-                <li>1秒广播间隔，持久续航</li>
-              </ul>
+          <h3 className="lp-section-title">爱兔帮守岗解决方案</h3>
+          <p className="lp-section-desc">从智能穿戴到云端大脑，一体化安全监护闭环</p>
+          <div className="lp-solution-layout">
+            <div className="lp-solution-image">
+              <img src="/images/product-design.png" alt="爱兔帮守岗解决方案" className="lp-product-img" />
             </div>
-            <div className="lp-hw-card">
-              <div className="lp-hw-icon">📡</div>
-              <h4>蓝牙网关</h4>
-              <ul>
-                <li>NRF52832 + ESP32 双芯架构</li>
-                <li>MQTT/HTTP/WebSocket 上传</li>
-                <li>MessagePack 高效编码</li>
-                <li>覆盖半径 50-100m</li>
-                <li>即插即用，快速部署</li>
-              </ul>
+            <div className="lp-solution-content">
+              <div className="lp-solution-card">
+                <div className="lp-sc-icon">⌚</div>
+                <div className="lp-sc-text">
+                  <h4>智能穿戴设备</h4>
+                  <p>专为物流场景定制的智能手环，集成高精度体征传感器与一键 SOS，IP68 防护等级，适应转运中心复杂环境</p>
+                </div>
+              </div>
+              <div className="lp-solution-card">
+                <div className="lp-sc-icon">📡</div>
+                <div className="lp-sc-text">
+                  <h4>无线传感网络</h4>
+                  <p>大范围低功耗无线覆盖，毫秒级数据采集与传输，支持多设备并发接入，确保不遗漏任何信号</p>
+                </div>
+              </div>
+              <div className="lp-solution-card">
+                <div className="lp-sc-icon">☁️</div>
+                <div className="lp-sc-text">
+                  <h4>云端智能大脑</h4>
+                  <p>实时流式计算引擎 + AI 风险预测模型，7×24 小时不间断分析，异常事件自动触发飞书告警</p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="lp-arch-flow">
-            <span className="lp-arch-node">⌚ T10 手环</span>
-            <span className="lp-arch-arrow">→ BLE →</span>
-            <span className="lp-arch-node">📡 蓝牙网关</span>
-            <span className="lp-arch-arrow">→ WiFi →</span>
-            <span className="lp-arch-node">🖥️ SafeGuard</span>
-            <span className="lp-arch-arrow">→ API →</span>
-            <span className="lp-arch-node">📱 飞书</span>
           </div>
         </div>
       </section>
 
-      {/* 飞书集成占位 */}
-      <section id="feishu" className="lp-section">
+      {/* AI 兔守岗系统 */}
+      <section id="ai-system" className="lp-section">
+        <div className="lp-container">
+          <h3 className="lp-section-title">
+            <span className="lp-gradient">AI 兔</span> 守岗系统
+          </h3>
+          <p className="lp-section-desc">智能分析 · 实时监控 · 主动预警 — 确保每个物流工作人员的生命安全</p>
+          <div className="lp-ai-grid">
+            <div className="lp-ai-card">
+              <div className="lp-ai-icon">🔍</div>
+              <h4>实时监控</h4>
+              <p>在岗人员体征数据实时大屏展示，车厢盲区可视化定位，状态异常即时高亮，安全态势一目了然</p>
+            </div>
+            <div className="lp-ai-card">
+              <div className="lp-ai-icon">📈</div>
+              <h4>智能分析</h4>
+              <p>基于机器学习的体征趋势分析，自动识别异常模式，提前预警潜在健康风险，从被动响应到主动预防</p>
+            </div>
+            <div className="lp-ai-card">
+              <div className="lp-ai-icon">⚡</div>
+              <h4>秒级响应</h4>
+              <p>SOS 一键触发 → 飞书即时推送 → 现场快速处置，全链路秒级响应，为生命争取每一秒</p>
+            </div>
+            <div className="lp-ai-card">
+              <div className="lp-ai-icon">🛡️</div>
+              <h4>生命守护</h4>
+              <p>每一位物流工作人员都值得被守护。爱兔帮 SafeGuard 用科技筑牢安全防线，让守护成为本能</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 飞书集成 */}
+      <section id="feishu" className="lp-section lp-section-alt">
         <div className="lp-container">
           <h3 className="lp-section-title">飞书深度集成</h3>
           <p className="lp-section-desc">不只是通知，而是完整的飞书工作流闭环</p>
@@ -135,7 +186,7 @@ const LandingPage: React.FC = () => {
                 <div className="lp-fc-header red">🚨 SOS 紧急求救</div>
                 <div className="lp-fc-body">
                   <p><strong>张三</strong> · 3号岗亭 · 车厢B区</p>
-                  <p className="lp-fc-time">2025-01-15 14:32:18</p>
+                  <p className="lp-fc-time">触发时间：14:32:18</p>
                   <div className="lp-fc-actions">
                     <span className="lp-fc-btn primary">✅ 已确认处理</span>
                     <span className="lp-fc-btn danger">❌ 误报</span>
@@ -163,14 +214,14 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 数据统计占位 */}
-      <section className="lp-section lp-section-alt">
+      {/* 数据统计 */}
+      <section className="lp-section">
         <div className="lp-container">
           <div className="lp-stats-grid">
             {[
               { num: '12,580', label: '累计守护工时 (h)' },
               { num: '328', label: '成功预警次数' },
-              { num: '32', label: '在职工人数' },
+              { num: '32', label: '在岗守护人数' },
               { num: '99.8%', label: '报警处置率' },
             ].map((s, i) => (
               <div key={i} className="lp-stat-item">
@@ -182,10 +233,10 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA 行动号召 */}
+      {/* CTA */}
       <section className="lp-cta">
-        <h3>为您的物流团队提供智能安全守护</h3>
-        <p>接入爱兔帮 SafeGuard，让每一位物流工作者都得到及时守护</p>
+        <h3>确保每个物流工作人员的生命安全</h3>
+        <p>爱兔帮 SafeGuard 守岗系统 — 用 AI 为每一位物流工作者筑牢安全防线</p>
         <div className="lp-hero-actions">
           <a href="#/app/dashboard" className="lp-btn lp-btn-primary">立即体验</a>
           <a href="mailto:contact@safeguard.cn" className="lp-btn lp-btn-outline">联系我们</a>
@@ -196,7 +247,19 @@ const LandingPage: React.FC = () => {
       <footer className="lp-footer">
         <div className="lp-footer-content">
           <div className="lp-footer-brand">
-            <span className="lp-logo-icon">🛡️</span>
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <defs>
+                <linearGradient id="lpFooterGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#1677ff" />
+                  <stop offset="100%" stopColor="#7e14ff" />
+                </linearGradient>
+              </defs>
+              <ellipse cx="12" cy="14" rx="6" ry="5" fill="url(#lpFooterGrad)" />
+              <ellipse cx="8" cy="7" rx="3" ry="6" fill="url(#lpFooterGrad)" transform="rotate(-10,8,7)" />
+              <ellipse cx="16" cy="7" rx="3" ry="6" fill="url(#lpFooterGrad)" transform="rotate(10,16,7)" />
+              <circle cx="10" cy="13" r="1" fill="#fff" />
+              <circle cx="14" cy="13" r="1" fill="#fff" />
+            </svg>
             <span>爱兔帮 SafeGuard 守岗系统</span>
           </div>
           <p>© 2025 爱兔帮 SafeGuard. All rights reserved.</p>

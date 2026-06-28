@@ -357,77 +357,126 @@
   margin: 0;
 }
 
-/* ── Hardware ───────────────────────────────── */
-.lp-hardware-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-bottom: 48px;
+/* ── Logo ──────────────────────────────────── */
+.lp-logo-svg {
+  display: block;
+  flex-shrink: 0;
 }
 
-.lp-hw-card {
+/* ── Solution Layout ───────────────────────── */
+.lp-solution-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.lp-solution-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lp-product-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: var(--lp-shadow-lg);
+}
+
+.lp-solution-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lp-solution-card {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px;
   background: var(--lp-bg);
   border: 1px solid var(--lp-border);
   border-radius: var(--lp-radius);
-  padding: 32px;
+  transition: all 0.3s ease;
+}
+
+.lp-solution-card:hover {
+  border-color: var(--lp-primary);
   box-shadow: var(--lp-shadow);
 }
 
-.lp-hw-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+.lp-sc-icon {
+  font-size: 36px;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(22,119,255,0.1), rgba(126,20,255,0.1));
+  border-radius: 12px;
 }
 
-.lp-hw-card h4 {
-  font-size: 20px;
+.lp-sc-text h4 {
+  font-size: 17px;
   font-weight: 700;
-  margin: 0 0 16px;
+  margin: 0 0 6px;
   color: var(--lp-text);
 }
 
-.lp-hw-card ul {
-  list-style: none;
-  padding: 0;
+.lp-sc-text p {
+  font-size: 14px;
+  color: var(--lp-text-secondary);
+  line-height: 1.7;
   margin: 0;
 }
 
-.lp-hw-card li {
-  padding: 6px 0;
+/* ── AI 守岗系统 ───────────────────────────── */
+.lp-ai-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.lp-ai-card {
+  text-align: center;
+  padding: 36px 20px;
+  background: linear-gradient(145deg, var(--lp-bg), var(--lp-bg-alt));
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  transition: all 0.3s ease;
+}
+
+.lp-ai-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--lp-shadow-lg);
+  border-color: var(--lp-primary);
+}
+
+.lp-ai-icon {
+  font-size: 44px;
+  margin-bottom: 16px;
+}
+
+.lp-ai-card h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: var(--lp-text);
+}
+
+.lp-ai-card p {
   font-size: 14px;
   color: var(--lp-text-secondary);
+  line-height: 1.7;
+  margin: 0;
 }
 
 .lp-hw-card li::before {
   content: "✓ ";
   color: var(--lp-primary);
   font-weight: 700;
-}
-
-.lp-arch-flow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 24px;
-  background: var(--lp-bg);
-  border-radius: var(--lp-radius);
-  border: 1px solid var(--lp-border);
-}
-
-.lp-arch-node {
-  padding: 10px 18px;
-  background: linear-gradient(135deg, var(--lp-primary), var(--lp-accent));
-  color: #fff;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.lp-arch-arrow {
-  font-size: 14px;
-  color: var(--lp-text-secondary);
-  font-weight: 600;
 }
 
 /* ── Feishu Showcase ────────────────────────── */
@@ -581,7 +630,8 @@
   .lp-features-grid { grid-template-columns: repeat(2, 1fr); }
   .lp-feishu-cards { grid-template-columns: repeat(2, 1fr); }
   .lp-stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .lp-hardware-grid { grid-template-columns: 1fr; }
+  .lp-ai-grid { grid-template-columns: repeat(2, 1fr); }
+  .lp-solution-layout { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 767px) {
@@ -595,7 +645,6 @@
   .lp-features-grid { grid-template-columns: 1fr; }
   .lp-feishu-cards { grid-template-columns: 1fr; }
   .lp-stats-grid { grid-template-columns: 1fr 1fr; }
-  .lp-arch-flow { flex-direction: column; }
-  .lp-arch-arrow { transform: rotate(90deg); }
+  .lp-ai-grid { grid-template-columns: 1fr; }
   .lp-stat-num { font-size: 32px; }
 }
